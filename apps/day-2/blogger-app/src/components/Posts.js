@@ -17,8 +17,6 @@ class Posts extends Component {
   }
 
   handleCategorySelect(category) {
-    console.log('Category selected:', this);
-    // this.state.selectedCategory = category;
     this.setState({ selectedCategory: category });
   }
 
@@ -29,6 +27,7 @@ class Posts extends Component {
       filteredPosts = posts;
     } else {
       filteredPosts = posts.filter(p => p.category === selectedCategory.id);
+
     }
 
 
@@ -39,11 +38,11 @@ class Posts extends Component {
         </div>
 
         <div className="col">
-          <h4>Posts</h4>
-          {filteredPosts.map(p => <PostDetail
-            key={p.id}
-            post={p}
-          />)}
+          <h4>Posts (Category: {this.state.selectedCategory.name})</h4>
+          {filteredPosts.length > 0
+            ? filteredPosts.map(p => <PostDetail key={p.id} post={p} />)
+            : <div className="alert alert-info">No posts for this category.</div>
+          }
         </div>
       </div>
     );
