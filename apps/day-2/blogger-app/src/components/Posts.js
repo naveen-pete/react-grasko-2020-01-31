@@ -1,44 +1,54 @@
-import React from 'react';
+import React, { Component } from 'react';
 
+import Categories from './Categories';
 import PostDetail from './PostDetail';
 
-const posts = [
-  {
-    id: 1,
-    title: 'My post 1',
-    body: 'My post 1 body',
-    author: 'author 1',
-    category: 'react'
-  },
-  {
-    id: 2,
-    title: 'My post 2',
-    body: 'My post 2 body',
-    author: 'author 2',
-    category: 'redux'
-  },
-  {
-    id: 3,
-    title: 'My post 3',
-    body: 'My post 3 body',
-    author: 'author 3',
-    category: 'node'
+import { posts, categoryAll } from '../data/store';
+
+class Posts extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      selectedCategory: categoryAll
+    };
+
+    this.handleCategorySelect = this.handleCategorySelect.bind(this);
   }
-];
 
-const Posts = () => {
-  return (
-    <div>
-      <h4>Posts</h4>
-      <hr />
+  handleCategorySelect(category) {
+    console.log('Category selected:', this);
+    // this.state.selectedCategory = category;
+    this.setState({ selectedCategory: category });
+  }
 
-      {posts.map(p => <PostDetail
-        key={p.id}
-        post={p}
-      />)}
+  render() {
+    const selectedCategory = this.state.selectedCategory;
+    let filteredPosts = [];
+    if (selectedCategory.id === 'all') {
+      filteredPosts = posts;
+    } else {
+      filteredPosts = posts.filter(p => p.category === selectedCategory.id);
+    }
 
-    </div>
-  );
-};
+
+    return (
+      <div className="row">
+        <div className="col-3">
+          <Categories onCategorySelect={this.handleCategorySelect} />
+        </div>
+
+        <div className="col">
+          <h4>Posts</h4>
+          {filteredPosts.map(p => <PostDetail
+            key={p.id}
+            post={p}
+          />)}
+        </div>
+      </div>
+    );
+  }
+
+}
 
 export default Posts;

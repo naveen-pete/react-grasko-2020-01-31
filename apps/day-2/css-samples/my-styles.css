@@ -1,0 +1,18 @@
+.myCssClass {
+  color: red;
+  background-color: lightblue;
+  border: 2px solid black;
+}
+
+.oneMoreClass {
+  font-weight: bold;
+  font-style: italic;
+}
+
+div {
+  text-decoration: underline;
+}
+
+#myPara {
+  font-family: 'Courier New', Courier, monospace;
+}
