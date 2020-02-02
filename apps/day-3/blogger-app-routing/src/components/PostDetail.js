@@ -13,6 +13,13 @@ class PostDetail extends Component {
     this.setState({ post });
   }
 
+  deletePost = id => {
+    if (window.confirm('Are you sure?')) {
+      postService.delete(id);
+      this.props.history.push('/posts');
+    }
+  }
+
   render() {
     const { post } = this.state;
 
@@ -44,7 +51,11 @@ class PostDetail extends Component {
             type="button"
             onClick={() => this.props.history.push(`/posts/${post.id}/edit`)}
           >Edit</button>
-          <button className="btn btn-sm btn-outline-danger" type="button">Delete</button>
+          <button
+            className="btn btn-sm btn-outline-danger"
+            type="button"
+            onClick={() => this.deletePost(post.id)}
+          >Delete</button>
         </div>
       </div>
     );
