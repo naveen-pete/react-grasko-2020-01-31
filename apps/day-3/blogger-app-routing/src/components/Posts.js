@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 import Categories from './Categories';
-
 import { categoryAll } from '../constants';
 import postService from '../services/PostService';
 
@@ -56,8 +56,8 @@ class Posts extends Component {
             <td>{p.category}</td>
             <td>
               <div className="btn-group btn-group-sm">
-                <a className="btn btn-info" href="/">View </a>
-                <a className="btn btn-warning" href="/">Edit</a>
+                <Link className="btn btn-info" to={"/posts/" + p.id}>View </Link>
+                <Link className="btn btn-warning" to={`/posts/${p.id}/edit`}>Edit</Link>
                 <button className="btn btn-danger" onClick={() => this.deletePost(p.id)}>Delete</button>
               </div>
             </td>
