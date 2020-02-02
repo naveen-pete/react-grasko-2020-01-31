@@ -1,5 +1,3 @@
-import { categories } from '../data/store';
-
 const apiUrl = 'http://localhost:3001/categories';
 
 class CategoryService {
@@ -9,10 +7,8 @@ class CategoryService {
   }
 
   get(id) {
-    const category = categories.find(c => c.id === id);
-    return category;
-
-    // return categories.find(c => c.id === id);
+    return fetch(`${apiUrl}/${id}`)
+      .then(response => response.json());
   }
 }
 

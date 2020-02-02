@@ -5,7 +5,7 @@ import Nav from './Nav';
 const Header = () => {
   return <div>
     <h2>Blogger App</h2>
-    <p>This is a simple React application!</p>
+    <p>A simple React app!</p>
     <Nav />
   </div>;
 };

@@ -10,13 +10,21 @@ class PostFormUpdate extends Component {
 
   componentDidMount() {
     const id = parseInt(this.props.match.params.id);
-    const post = postService.get(id);
-    this.setState({ post });
+    postService.get(id)
+      .then(post => this.setState({ post }))
+      .catch(error => {
+        console.log('Get post failed.');
+        console.log('Error:', error);
+      });
   }
 
   handleSubmit = post => {
-    postService.update(post);
-    this.props.history.push('/posts');
+    postService.update(post)
+      .then(() => this.props.history.push('/posts'))
+      .catch(error => {
+        console.log('Update post failed.');
+        console.log('Error:', error);
+      });
   }
 
   render() {

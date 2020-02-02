@@ -65,6 +65,7 @@ class PostForm extends Component {
             <div className="form-group">
               <label htmlFor="title">Title</label>
               <input
+                required
                 type="text"
                 className="form-control"
                 id="title"
@@ -77,6 +78,7 @@ class PostForm extends Component {
             <div className="form-group">
               <label htmlFor="body">Body</label>
               <textarea
+                required
                 className="form-control"
                 id="body"
                 name="body"
@@ -91,6 +93,7 @@ class PostForm extends Component {
             <div className="form-group">
               <label htmlFor="author">Author</label>
               <input
+                required
                 type="text"
                 className="form-control"
                 id="author"
@@ -110,7 +113,7 @@ class PostForm extends Component {
                 value={category}
                 onChange={this.handleChange}
               >
-                <option value="">--Select--</option>
+                <option value="">- Select -</option>
                 {categories.map(c => <option
                   key={c.id} value={c.id}>{c.name}</option>
                 )}

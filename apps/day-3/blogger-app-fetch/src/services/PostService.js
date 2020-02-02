@@ -1,18 +1,14 @@
-import { posts } from '../data/store';
-
 const apiUrl = 'http://localhost:3001/posts';
 
 class PostService {
   getAll() {
     return fetch(apiUrl)
-      .then((response) => {
-        return response.json();
-      });
+      .then(response => response.json());
   }
 
   get(id) {
-    const post = posts.find(p => p.id === id);
-    return post;
+    return fetch(`${apiUrl}/${id}`)
+      .then(response => response.json());
   }
 
   create(post) {
@@ -27,23 +23,22 @@ class PostService {
   }
 
   update(post) {
-    const postToUpdate = posts.find(p => p.id === post.id);
-
-    if (postToUpdate) {
-      postToUpdate.title = post.title;
-      postToUpdate.body = post.body;
-      postToUpdate.author = post.author;
-      postToUpdate.category = post.category;
-    }
-
-    return postToUpdate;
+    return fetch(`${apiUrl}/${post.id}`, {
+      method: 'PATCH',
+      body: JSON.stringify(post),
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+      .then(response => response.json());
   }
 
   delete(id) {
-    const index = posts.findIndex(p => p.id === id);
-    posts.splice(index, 1);
+    return fetch(`${apiUrl}/${id}`, {
+      method: 'DELETE',
+    })
+      .then(response => response.json());
   }
 }
 
-const instance = new PostService();
-export default instance;
+export default new PostService();

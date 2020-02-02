@@ -9,14 +9,22 @@ class PostDetail extends Component {
 
   componentDidMount() {
     const id = parseInt(this.props.match.params.id);
-    const post = postService.get(id);
-    this.setState({ post });
+    postService.get(id)
+      .then(post => this.setState({ post }))
+      .catch(error => {
+        console.log('Get post failed.');
+        console.log('Error:', error);
+      });
   }
 
   deletePost = id => {
     if (window.confirm('Are you sure?')) {
-      postService.delete(id);
-      this.props.history.push('/posts');
+      postService.delete(id)
+        .then(() => this.props.history.push('/posts'))
+        .catch(error => {
+          console.log('Delete post failed.');
+          console.log('Error:', error);
+        });
     }
   }
 

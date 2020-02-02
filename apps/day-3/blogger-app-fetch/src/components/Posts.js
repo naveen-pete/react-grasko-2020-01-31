@@ -19,9 +19,7 @@ class Posts extends Component {
 
   componentDidMount() {
     postService.getAll()
-      .then((posts) => {
-        this.setState({ posts });
-      })
+      .then(posts => this.setState({ posts }))
       .catch((error) => {
         console.log('Get posts failed.');
         console.log('Error:', error);
@@ -34,13 +32,19 @@ class Posts extends Component {
 
   deletePost(id) {
     if (window.confirm('Are you sure?')) {
-      postService.delete(id);
-      this.setState((prevState) => {
-        const updatedPosts = prevState.posts.filter(p => p.id !== id);
-        return {
-          posts: updatedPosts
-        };
-      });
+      postService.delete(id)
+        .then(() => {
+          this.setState((prevState) => {
+            const updatedPosts = prevState.posts.filter(p => p.id !== id);
+            return {
+              posts: updatedPosts
+            };
+          });
+        })
+        .catch(error => {
+          console.log('Delete post failed.');
+          console.log('Error:', error);
+        });
     }
   }
 
