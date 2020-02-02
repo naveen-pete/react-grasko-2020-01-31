@@ -1,8 +1,13 @@
 import { posts } from '../data/store';
 
+const apiUrl = 'http://localhost:3001/posts';
+
 class PostService {
   getAll() {
-    return posts;
+    return fetch(apiUrl)
+      .then((response) => {
+        return response.json();
+      });
   }
 
   get(id) {
@@ -11,9 +16,14 @@ class PostService {
   }
 
   create(post) {
-    post.id = Date.now();
-    posts.push(post);
-    return post;
+    return fetch(apiUrl, {
+      method: 'POST',
+      body: JSON.stringify(post),
+      headers: {
+        'content-type': 'application/json'
+      }
+    })
+      .then(response => response.json());
   }
 
   update(post) {

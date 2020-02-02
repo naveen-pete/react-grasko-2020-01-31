@@ -26,8 +26,12 @@ class PostForm extends Component {
   }
 
   componentDidMount() {
-    const categories = categoryService.getAll();
-    this.setState({ categories });
+    categoryService.getAll()
+      .then(categories => this.setState({ categories }))
+      .catch(error => {
+        console.log('Get categories failed.');
+        console.log('Error:', error);
+      });
   }
 
   handleSubmit = e => {

@@ -18,8 +18,14 @@ class Posts extends Component {
   }
 
   componentDidMount() {
-    const posts = postService.getAll();
-    this.setState({ posts });
+    postService.getAll()
+      .then((posts) => {
+        this.setState({ posts });
+      })
+      .catch((error) => {
+        console.log('Get posts failed.');
+        console.log('Error:', error);
+      });
   }
 
   handleCategorySelect(category) {

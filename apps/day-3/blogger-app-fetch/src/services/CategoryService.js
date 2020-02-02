@@ -1,8 +1,11 @@
 import { categories } from '../data/store';
 
+const apiUrl = 'http://localhost:3001/categories';
+
 class CategoryService {
   getAll() {
-    return categories;
+    return fetch(apiUrl)
+      .then(response => response.json());
   }
 
   get(id) {

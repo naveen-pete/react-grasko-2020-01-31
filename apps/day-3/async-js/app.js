@@ -1,37 +1,54 @@
-const apiBaseUrl = 'https://jsonplaceholder.typicode.com';
+const getUser = (name) => {
+  const p = new Promise((resolve, reject) => {
+    console.log('searching user. please wait...')
 
-const getUser = async userName => {
-  console.log('getUser() - begin');
+    setTimeout(() => {
+      const user = users.find(u => u.name === name);
+      if (!user) {
+        reject('User does not exist!');
+        return;
+      }
 
-  const response = await fetch(`${apiBaseUrl}/users?username=${userName}`);
-  const users = await response.json();
+      resolve(user);
+    }, 4000);
+  });
 
-  return users;
+  return p;
+
 };
 
-const getPosts = async userId => {
-  console.log('getPosts() - begin');
+const getPosts = (userId) => {
+  return new Promise((resolve, reject) => {
+    console.log('searching posts. please wait...')
 
-  const response = await fetch(`${apiBaseUrl}/posts?userId=${userId}`);
-  const posts = await response.json();
+    setTimeout(() => {
+      const postsForUser = posts.filter(p => p.userId === userId);
+      if (postsForUser.length === 0) {
+        reject('No posts for the user!');
+        return;
+      }
 
-  return posts;
+      resolve(postsForUser);
+    }, 4000);
+  });
 };
 
 const doWork = async () => {
   try {
-    const users = await getUser('Antonette');
-    console.log('user:', users[0]);
+    const result = await getUser('ram');
+    console.log('user:', result);
 
-    const postsForUser = await getPosts(users[0].id);
-    console.log('posts for user:', postsForUser);
-  } catch (error) {
-    console.log('error:', error);
+    const result2 = await getPosts(result.id);
+    console.log('posts for user:', result2);
+  } catch (err) {
+    console.log('Error:', err);
   }
-};
+}
 
 console.log('begin');
 
 doWork();
+
+console.log('do some other operation');
 
 console.log('end');
