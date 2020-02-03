@@ -1,17 +1,14 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import PostForm from './PostForm';
-import postService from '../services/PostService';
+import { initCreatePost } from '../actions/posts';
 
 class PostFormCreate extends Component {
   handleSubmit = post => {
     delete post.id;
-    postService.create(post)
-      .then(() => this.props.history.push('/posts'))
-      .catch(error => {
-        console.log('Create post failed.');
-        console.log('Error:', error);
-      });
+    this.props.dispatchCreatePost(post)
+      .then(() => this.props.history.push('/posts'));
   }
 
   render() {
@@ -22,4 +19,10 @@ class PostFormCreate extends Component {
   }
 }
 
-export default PostFormCreate;
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchCreatePost: post => dispatch(initCreatePost(post))
+  };
+};
+
+export default connect(null, mapDispatchToProps)(PostFormCreate);

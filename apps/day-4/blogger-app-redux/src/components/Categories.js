@@ -1,24 +1,11 @@
 import React, { Component } from 'react';
+import { connect } from 'react-redux';
 
 import { categoryAll } from '../constants';
-import categoryService from '../services/CategoryService';
 
 class Categories extends Component {
-  state = {
-    categories: []
-  }
-
-  componentDidMount() {
-    categoryService.getAll()
-      .then(categories => this.setState({ categories }))
-      .catch(error => {
-        console.log('Get categories failed.');
-        console.log('Error:', error);
-      });
-  }
-
   render() {
-    const categoriesWithAll = [categoryAll, ...this.state.categories];
+    const categoriesWithAll = [categoryAll, ...this.props.categories];
     return <div>
       <h4>Categories</h4>
       <div className="list-group">
@@ -30,4 +17,10 @@ class Categories extends Component {
   }
 }
 
-export default Categories;
+const mapStateToProps = (state) => {
+  return {
+    categories: state.categories
+  };
+};
+
+export default connect(mapStateToProps)(Categories);

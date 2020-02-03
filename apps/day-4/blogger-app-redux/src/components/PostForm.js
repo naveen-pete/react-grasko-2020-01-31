@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-
-import categoryService from '../services/CategoryService';
+import { connect } from 'react-redux';
 
 class PostForm extends Component {
   state = {
@@ -11,7 +10,6 @@ class PostForm extends Component {
     category: '',
 
     initialized: false,
-    categories: []
   }
 
   static getDerivedStateFromProps(props, state) {
@@ -23,15 +21,6 @@ class PostForm extends Component {
     }
 
     return null;
-  }
-
-  componentDidMount() {
-    categoryService.getAll()
-      .then(categories => this.setState({ categories }))
-      .catch(error => {
-        console.log('Get categories failed.');
-        console.log('Error:', error);
-      });
   }
 
   handleSubmit = e => {
@@ -53,8 +42,8 @@ class PostForm extends Component {
   }
 
   render() {
-    const { operation } = this.props;
-    const { title, body, author, category, categories } = this.state;
+    const { operation, categories } = this.props;
+    const { title, body, author, category } = this.state;
 
     return <div>
       <h4 className="mr-3">{operation} Post</h4>
@@ -129,4 +118,10 @@ class PostForm extends Component {
   }
 }
 
-export default PostForm;
+const mapStateToProps = (state) => {
+  return {
+    categories: state.categories
+  };
+};
+
+export default connect(mapStateToProps)(PostForm);

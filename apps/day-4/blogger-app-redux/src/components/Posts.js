@@ -1,9 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
+import { connect } from 'react-redux';
 
 import Categories from './Categories';
 import { categoryAll } from '../constants';
-import postService from '../services/PostService';
+import { initGetPosts, initDeletePost } from '../actions/posts';
 
 class Posts extends Component {
   constructor(props) {
@@ -11,19 +12,13 @@ class Posts extends Component {
 
     this.state = {
       selectedCategory: categoryAll,
-      posts: []
     };
 
     this.handleCategorySelect = this.handleCategorySelect.bind(this);
   }
 
   componentDidMount() {
-    postService.getAll()
-      .then(posts => this.setState({ posts }))
-      .catch((error) => {
-        console.log('Get posts failed.');
-        console.log('Error:', error);
-      });
+    this.props.dispatchGetPosts();
   }
 
   handleCategorySelect(category) {
@@ -32,19 +27,7 @@ class Posts extends Component {
 
   deletePost(id) {
     if (window.confirm('Are you sure?')) {
-      postService.delete(id)
-        .then(() => {
-          this.setState((prevState) => {
-            const updatedPosts = prevState.posts.filter(p => p.id !== id);
-            return {
-              posts: updatedPosts
-            };
-          });
-        })
-        .catch(error => {
-          console.log('Delete post failed.');
-          console.log('Error:', error);
-        });
+      this.props.dispatchDeletePost(id);
     }
   }
 
@@ -79,7 +62,7 @@ class Posts extends Component {
 
   render() {
     const selectedCategory = this.state.selectedCategory;
-    const posts = this.state.posts;
+    const posts = this.props.posts;
 
     let filteredPosts = [];
     if (selectedCategory.id === 'all') {
@@ -107,4 +90,17 @@ class Posts extends Component {
 
 }
 
-export default Posts;
+const mapStateToProps = state => {
+  return {
+    posts: state.posts
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    dispatchGetPosts: () => dispatch(initGetPosts()),
+    dispatchDeletePost: id => dispatch(initDeletePost(id))
+  };
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(Posts);
